@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "beardedfox",
+  "version": "0.0.1",
+  "name": "Bearded Foxes",
+  "description": "Adds bearded foxes from my Foxberd YouTube series!",
+  "authors": [
+    "GuySmith"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+  "license": "MIT",
+  "icon": "assets/beardedfox/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.guysmith.beardedfox.BeardedFox"
+    ],
+    "client": [
+      "com.guysmith.beardedfox.ModEntitiesClient"
+    ]
+  },
+  "mixins": [
+    "beardedfox.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.10.3+build.211",
+    "fabric": "*",
+    "minecraft": "1.16.3"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}
