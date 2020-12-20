@@ -253,7 +253,7 @@ public class BeardedFoxEntity extends AnimalEntity {
         return foxEntity;
     }
 
-//    @Nullable
+    //    @Nullable
     public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, /*@Nullable*/ EntityData entityData, /*@Nullable*/ CompoundTag entityTag) {
         Optional<RegistryKey<Biome>> optional = world.method_31081(this.getBlockPos());
         BeardedFoxEntity.Type type = BeardedFoxEntity.Type.fromBiome(optional);
