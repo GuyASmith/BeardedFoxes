@@ -25,12 +25,12 @@ public class SpawnInitializer {
     private static final List<RegistryKey<Biome>> cyanBiomes = BeardedFoxEntity.Type.CYAN.getBiomes();
 
     public static void initialize() {
-        SpawnRestrictionsAccessor.invokeRegister(BeardedFox.BEARDED_FOX_ENTITY_TYPE, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BeardedFoxEntity::canMobSpawn);
+        SpawnRestrictionsAccessor.invokeRegister(ModEntityTypes.BEARDED_FOX, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BeardedFoxEntity::canMobSpawn);
 
         for(Biome biome: BuiltinRegistries.BIOME) {
             for(RegistryKey<Biome> key : cyanBiomes) {
                 if(biome == BuiltinRegistries.BIOME.get(key)) {
-                    addSpawnToBiome(biome, new SpawnSettings.SpawnEntry(BeardedFox.BEARDED_FOX_ENTITY_TYPE, 6, 2,4));
+                    addSpawnToBiome(biome, new SpawnSettings.SpawnEntry(ModEntityTypes.BEARDED_FOX, 6, 2,4));
                     break; // speeds up the process
                 }
             }

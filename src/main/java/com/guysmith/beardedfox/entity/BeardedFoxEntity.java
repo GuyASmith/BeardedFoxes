@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 //import com.sun.istack.internal.Nullable;
 import com.guysmith.beardedfox.BeardedFox;
+import com.guysmith.beardedfox.registry.ModEntityTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.advancement.criterion.Criteria;
@@ -101,6 +102,16 @@ public class BeardedFoxEntity extends AnimalEntity {
     private float extraRollingHeight;
     private float lastExtraRollingHeight;
     private int eatingTime;
+
+    // the IDE complains but it seems to compile without; saved in comments in case I ever actually need it
+    /*public BeardedFoxEntity(World world) {
+        super(ModEntityTypes.BEARDED_FOX, world);
+        this.lookControl = new BeardedFoxEntity.FoxLookControl();
+        this.moveControl = new BeardedFoxEntity.FoxMoveControl();
+        this.setPathfindingPenalty(PathNodeType.DANGER_OTHER, 0.0F);
+        this.setPathfindingPenalty(PathNodeType.DAMAGE_OTHER, 0.0F);
+        this.setCanPickUpLoot(true);
+    }*/
 
     public BeardedFoxEntity(EntityType<? extends BeardedFoxEntity> entityType, World world) {
         super(entityType, world);
@@ -248,7 +259,8 @@ public class BeardedFoxEntity extends AnimalEntity {
     }
 
     public BeardedFoxEntity createChild(ServerWorld serverWorld, PassiveEntity passiveEntity) {
-        BeardedFoxEntity foxEntity = (BeardedFoxEntity) BeardedFox.BEARDED_FOX_ENTITY_TYPE.create(serverWorld);
+        // possibility: breed Bearded Foxes with all banner-matching colour palettes through cross breeding and such?
+        BeardedFoxEntity foxEntity = (BeardedFoxEntity) ModEntityTypes.BEARDED_FOX.create(serverWorld);
         foxEntity.setType(this.random.nextBoolean() ? this.getFoxType() : ((BeardedFoxEntity)passiveEntity).getFoxType());
         return foxEntity;
     }
@@ -652,10 +664,10 @@ public class BeardedFoxEntity extends AnimalEntity {
     }
 
     static {
-        TYPE = DataTracker.registerData(FoxEntity.class, TrackedDataHandlerRegistry.INTEGER);
-        FOX_FLAGS = DataTracker.registerData(FoxEntity.class, TrackedDataHandlerRegistry.BYTE);
-        OWNER = DataTracker.registerData(FoxEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
-        OTHER_TRUSTED = DataTracker.registerData(FoxEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
+        TYPE = DataTracker.registerData(BeardedFoxEntity.class, TrackedDataHandlerRegistry.INTEGER);
+        FOX_FLAGS = DataTracker.registerData(BeardedFoxEntity.class, TrackedDataHandlerRegistry.BYTE);
+        OWNER = DataTracker.registerData(BeardedFoxEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
+        OTHER_TRUSTED = DataTracker.registerData(BeardedFoxEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
         PICKABLE_DROP_FILTER = (itemEntity) -> {
             return !itemEntity.cannotPickup() && itemEntity.isAlive();
         };
@@ -1080,7 +1092,7 @@ public class BeardedFoxEntity extends AnimalEntity {
 
     public class WorriableEntityFilter implements Predicate<LivingEntity> {
         public boolean test(LivingEntity livingEntity) {
-            if (livingEntity instanceof FoxEntity) {
+            if (livingEntity instanceof BeardedFoxEntity) {
                 return false;
             } else if (!(livingEntity instanceof ChickenEntity) && !(livingEntity instanceof RabbitEntity) && !(livingEntity instanceof HostileEntity)) {
                 if (livingEntity instanceof TameableEntity) {
@@ -1367,7 +1379,7 @@ public class BeardedFoxEntity extends AnimalEntity {
         private final String key;
         private final List<RegistryKey<Biome>> biomes;
 
-        private Type(int id, String key, RegistryKey<Biome>... registryKeys) {
+        Type(int id, String key, RegistryKey<Biome>... registryKeys) {
             this.id = id;
             this.key = key;
             this.biomes = Arrays.asList(registryKeys);

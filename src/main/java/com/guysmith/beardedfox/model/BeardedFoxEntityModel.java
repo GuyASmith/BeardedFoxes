@@ -5,11 +5,13 @@ import com.guysmith.beardedfox.entity.BeardedFoxEntity;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.EntityModel;
+import net.minecraft.client.render.entity.model.FoxEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
 public class BeardedFoxEntityModel extends EntityModel<BeardedFoxEntity> {
     // this code copied from mostly FoxEntityModel, with a hint of AnimalModel to cover my bases
+        // reason it had to be duplicated and not inherited: FoxEntity.Type, the source of all my irritation
     private final boolean headScaled;
     private final float childHeadYOffset;
     private final float childHeadZOffset;

@@ -1,5 +1,5 @@
 {
-  "entity_type.beardedfox.beardedfox": "Bearded Fox",
+  "entity_type.beardedfox.beardedfox": "ひげをはやしフォックス",
   "item.beardedfox.beardedfox_spawn_egg": "Spawn Bearded Fox",
   "item.beardedfox.red_bf_banner": "Red Bearded Fox Banner",
   "item.beardedfox.orange_bf_banner": "Orange Bearded Fox Banner",
@@ -14,7 +14,7 @@
   "item.beardedfox.light_blue_bf_banner": "Light Blue Bearded Fox Banner",
   "item.beardedfox.brown_bf_banner": "Brown Bearded Fox Banner",
   "item.beardedfox.white_bf_banner": "White Bearded Fox Banner",
-  "item.beardedfox.light_gray_bf_banner": "Light Gray Bearded Fox Banner",
-  "item.beardedfox.gray_bf_banner": "Gray Bearded Fox Banner",
+  "item.beardedfox.light_gray_bf_banner": "Light Grey Bearded Fox Banner",
+  "item.beardedfox.gray_bf_banner": "Grey Bearded Fox Banner",
   "item.beardedfox.black_bf_banner": "Black Bearded Fox Banner"
 }

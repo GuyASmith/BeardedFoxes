@@ -13,11 +13,13 @@ import net.minecraft.util.registry.Registry;
 
 public class ModItems {
 
-    private static final Item BEARDED_FOX_SPAWN_EGG = new SpawnEggItem(BeardedFox.BEARDED_FOX_ENTITY_TYPE, 0x169B9B, 0x1A89BF, new Item.Settings().group(ItemGroup.MISC));
+    private static final Item BEARDED_FOX_SPAWN_EGG = new SpawnEggItem(ModEntityTypes.BEARDED_FOX, 0x169B9B, 0x1A89BF, new Item.Settings().group(ItemGroup.MISC));
 
     public static void registerItems() {
         Registry.register(Registry.ITEM, new Identifier("beardedfox", "beardedfox_spawn_egg"), BEARDED_FOX_SPAWN_EGG);
     }
+
+
 
     /*public class ModifiedBannerItem extends BannerItem { // I'm not doing this, per se
 
