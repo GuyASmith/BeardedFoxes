@@ -1,6 +1,5 @@
 package com.guysmith.beardedfox;
 
-import com.guysmith.beardedfox.BeardedFox;
 import com.guysmith.beardedfox.model.BeardedFoxEntityModel;
 import com.guysmith.beardedfox.registry.ModEntityTypes;
 import com.guysmith.beardedfox.renderer.BeardedFoxEntityRenderer;

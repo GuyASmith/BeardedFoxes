@@ -13,7 +13,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 //import com.sun.istack.internal.Nullable;
-import com.guysmith.beardedfox.BeardedFox;
 import com.guysmith.beardedfox.registry.ModEntityTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -133,20 +132,14 @@ public class BeardedFoxEntity extends AnimalEntity {
     protected void initGoals() {
         this.followChickenAndRabbitGoal = new FollowTargetGoal(this, AnimalEntity.class, 10, false, false, (livingEntity) -> livingEntity instanceof ChickenEntity || livingEntity instanceof RabbitEntity);
         this.followBabyTurtleGoal = new FollowTargetGoal(this, TurtleEntity.class, 10, false, false, TurtleEntity.BABY_TURTLE_ON_LAND_FILTER);
-        this.followFishGoal = new FollowTargetGoal(this, FishEntity.class, 20, false, false, (livingEntity) -> {
-            return livingEntity instanceof SchoolingFishEntity;
-        });
+        this.followFishGoal = new FollowTargetGoal(this, FishEntity.class, 20, false, false, (livingEntity) -> livingEntity instanceof SchoolingFishEntity);
         this.goalSelector.add(0, new BeardedFoxEntity.FoxSwimGoal());
         this.goalSelector.add(1, new BeardedFoxEntity.StopWanderingGoal());
         this.goalSelector.add(2, new BeardedFoxEntity.EscapeWhenNotAggressiveGoal(2.2D));
         this.goalSelector.add(3, new BeardedFoxEntity.MateGoal(1.0D));
-        this.goalSelector.add(4, new FleeEntityGoal(this, PlayerEntity.class, 16.0F, 1.6D, 1.4D, (livingEntity) -> {
-            return NOTICEABLE_PLAYER_FILTER.test((Entity) livingEntity) && !this.canTrust(((Entity) livingEntity).getUuid()) && !this.isAggressive();
-        }));
+        this.goalSelector.add(4, new FleeEntityGoal(this, PlayerEntity.class, 16.0F, 1.6D, 1.4D, (livingEntity) -> NOTICEABLE_PLAYER_FILTER.test((Entity) livingEntity) && !this.canTrust(((Entity) livingEntity).getUuid()) && !this.isAggressive()));
         this.goalSelector.add(4, new FleeEntityGoal(this, WolfEntity.class, 8.0F, 1.6D, 1.4D, (livingEntity) -> !((WolfEntity)livingEntity).isTamed() && !this.isAggressive()));
-        this.goalSelector.add(4, new FleeEntityGoal(this, PolarBearEntity.class, 8.0F, 1.6D, 1.4D, (livingEntity) -> {
-            return !this.isAggressive();
-        }));
+        this.goalSelector.add(4, new FleeEntityGoal(this, PolarBearEntity.class, 8.0F, 1.6D, 1.4D, (livingEntity) -> !this.isAggressive()));
         this.goalSelector.add(5, new BeardedFoxEntity.MoveToHuntGoal());
         this.goalSelector.add(6, new BeardedFoxEntity.JumpChasingGoal());
         this.goalSelector.add(6, new BeardedFoxEntity.AvoidDaylightGoal(1.25D));
@@ -160,9 +153,7 @@ public class BeardedFoxEntity extends AnimalEntity {
         this.goalSelector.add(11, new BeardedFoxEntity.PickupItemGoal());
         this.goalSelector.add(12, new BeardedFoxEntity.LookAtEntityGoal(this, PlayerEntity.class, 24.0F));
         this.goalSelector.add(13, new BeardedFoxEntity.SitDownAndLookAroundGoal());
-        this.targetSelector.add(3, new BeardedFoxEntity.DefendFriendGoal(LivingEntity.class, false, false, (livingEntity) -> {
-            return JUST_ATTACKED_SOMETHING_FILTER.test(livingEntity) && !this.canTrust(livingEntity.getUuid());
-        }));
+        this.targetSelector.add(3, new BeardedFoxEntity.DefendFriendGoal(LivingEntity.class, false, false, (livingEntity) -> JUST_ATTACKED_SOMETHING_FILTER.test(livingEntity) && !this.canTrust(livingEntity.getUuid())));
     }
 
     public SoundEvent getEatSound(ItemStack stack) {
@@ -270,13 +261,13 @@ public class BeardedFoxEntity extends AnimalEntity {
         Optional<RegistryKey<Biome>> optional = world.method_31081(this.getBlockPos());
         BeardedFoxEntity.Type type = BeardedFoxEntity.Type.fromBiome(optional);
         boolean bl = false;
-        if (entityData instanceof BeardedFoxEntity.FoxData) {
-            type = ((BeardedFoxEntity.FoxData)entityData).type;
-            if (((BeardedFoxEntity.FoxData)entityData).getSpawnedCount() >= 2) {
+        if (entityData instanceof BeardedFoxData) {
+            type = ((BeardedFoxData)entityData).type;
+            if (((BeardedFoxData)entityData).getSpawnedCount() >= 2) {
                 bl = true;
             }
         } else {
-            entityData = new BeardedFoxEntity.FoxData(type);
+            entityData = new BeardedFoxData(type);
         }
 
         this.setType(type);
@@ -293,18 +284,18 @@ public class BeardedFoxEntity extends AnimalEntity {
     }
 
     private void addTypeSpecificGoals() {
-        /*if (this.getFoxType() == FoxEntity.Type.RED) {
+        if (this.getFoxType() == Type.CYAN
+                || this.getFoxType() == Type.RED
+                || this.getFoxType() == Type.GREEN
+                || this.getFoxType() == Type.BROWN) {
             this.targetSelector.add(4, this.followChickenAndRabbitGoal);
-            this.targetSelector.add(4, this.followBabyTurtleGoal);
-            this.targetSelector.add(6, this.followFishGoal);
+            this.targetSelector.add(4, this.followFishGoal);
+            this.targetSelector.add(6, this.followBabyTurtleGoal);
         } else {
             this.targetSelector.add(4, this.followFishGoal);
             this.targetSelector.add(6, this.followChickenAndRabbitGoal);
             this.targetSelector.add(6, this.followBabyTurtleGoal);
-        }*/
-        this.targetSelector.add(4, this.followChickenAndRabbitGoal);
-        this.targetSelector.add(4, this.followFishGoal);
-        this.targetSelector.add(6, this.followBabyTurtleGoal);
+        }
     }
 
     protected void eat(PlayerEntity player, ItemStack stack) {
@@ -668,9 +659,7 @@ public class BeardedFoxEntity extends AnimalEntity {
         FOX_FLAGS = DataTracker.registerData(BeardedFoxEntity.class, TrackedDataHandlerRegistry.BYTE);
         OWNER = DataTracker.registerData(BeardedFoxEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
         OTHER_TRUSTED = DataTracker.registerData(BeardedFoxEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
-        PICKABLE_DROP_FILTER = (itemEntity) -> {
-            return !itemEntity.cannotPickup() && itemEntity.isAlive();
-        };
+        PICKABLE_DROP_FILTER = (itemEntity) -> !itemEntity.cannotPickup() && itemEntity.isAlive();
         JUST_ATTACKED_SOMETHING_FILTER = (entity) -> {
             if (!(entity instanceof LivingEntity)) {
                 return false;
@@ -679,12 +668,8 @@ public class BeardedFoxEntity extends AnimalEntity {
                 return livingEntity.getAttacking() != null && livingEntity.getLastAttackTime() < livingEntity.age + 600;
             }
         };
-        CHICKEN_AND_RABBIT_FILTER = (entity) -> {
-            return entity instanceof ChickenEntity || entity instanceof RabbitEntity;
-        };
-        NOTICEABLE_PLAYER_FILTER = (entity) -> {
-            return !entity.isSneaky() && EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR.test(entity);
-        };
+        CHICKEN_AND_RABBIT_FILTER = (entity) -> entity instanceof ChickenEntity || entity instanceof RabbitEntity;
+        NOTICEABLE_PLAYER_FILTER = (entity) -> !entity.isSneaky() && EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR.test(entity);
     }
 
     class LookAtEntityGoal extends net.minecraft.entity.ai.goal.LookAtEntityGoal {
@@ -902,10 +887,10 @@ public class BeardedFoxEntity extends AnimalEntity {
         }
     }
 
-    public static class FoxData extends PassiveEntity.PassiveData {
+    public static class BeardedFoxData extends PassiveEntity.PassiveData {
         public final Type type;
 
-        public FoxData(BeardedFoxEntity.Type type) {
+        public BeardedFoxData(BeardedFoxEntity.Type type) {
             super(false);
             this.type = type;
         }
@@ -1363,11 +1348,14 @@ public class BeardedFoxEntity extends AnimalEntity {
     }
 
     public static enum Type {
-        /*RED(0, "red", BiomeKeys.TAIGA, BiomeKeys.TAIGA_HILLS, BiomeKeys.TAIGA_MOUNTAINS, BiomeKeys.GIANT_TREE_TAIGA, BiomeKeys.GIANT_SPRUCE_TAIGA, BiomeKeys.GIANT_TREE_TAIGA_HILLS, BiomeKeys.GIANT_SPRUCE_TAIGA_HILLS),
-        SNOW(1, "snow", BiomeKeys.SNOWY_TAIGA, BiomeKeys.SNOWY_TAIGA_HILLS, BiomeKeys.SNOWY_TAIGA_MOUNTAINS),
-        CYAN(2, "cyan", BiomeKeys.BIRCH_FOREST, BiomeKeys.BIRCH_FOREST_HILLS, BiomeKeys.TALL_BIRCH_FOREST, BiomeKeys.TALL_BIRCH_HILLS, BiomeKeys.FOREST);*/
-
-        CYAN(0, "cyan", BiomeKeys.BIRCH_FOREST, BiomeKeys.BIRCH_FOREST_HILLS, BiomeKeys.TALL_BIRCH_FOREST, BiomeKeys.TALL_BIRCH_HILLS, BiomeKeys.FOREST, BiomeKeys.WOODED_HILLS);
+        CYAN(0, "cyan", BiomeKeys.BIRCH_FOREST, BiomeKeys.BIRCH_FOREST_HILLS, BiomeKeys.TALL_BIRCH_FOREST, BiomeKeys.TALL_BIRCH_HILLS, BiomeKeys.FOREST, BiomeKeys.WOODED_HILLS),
+        RED(1, "red", BiomeKeys.BADLANDS, BiomeKeys.BADLANDS_PLATEAU, BiomeKeys.ERODED_BADLANDS, BiomeKeys.MODIFIED_BADLANDS_PLATEAU, BiomeKeys.MODIFIED_WOODED_BADLANDS_PLATEAU, BiomeKeys.WOODED_BADLANDS_PLATEAU),
+        WHITE(2, "white", BiomeKeys.SNOWY_MOUNTAINS, BiomeKeys.SNOWY_TAIGA_MOUNTAINS),
+        GREEN(3, "green", BiomeKeys.SWAMP, BiomeKeys.SWAMP_HILLS),
+        GRAY(4, "gray", BiomeKeys.MOUNTAINS, BiomeKeys.GRAVELLY_MOUNTAINS, BiomeKeys.MODIFIED_GRAVELLY_MOUNTAINS, BiomeKeys.WOODED_MOUNTAINS),
+        BROWN(5, "brown", BiomeKeys.DARK_FOREST, BiomeKeys.DARK_FOREST_HILLS); // that's all I'm going for at the moment
+        /*LIME(6, "lime", BiomeKeys.FLOWER_FOREST, BiomeKeys.SUNFLOWER_PLAINS),
+        YELLOW(7, "yellow", BiomeKeys.DESERT, BiomeKeys.DESERT_LAKES, BiomeKeys.DESERT_HILLS);*/
 
         private static final BeardedFoxEntity.Type[] TYPES = (BeardedFoxEntity.Type[]) Arrays.stream(values()).sorted(Comparator.comparingInt(BeardedFoxEntity.Type::getId)).toArray((i) -> {
             return new BeardedFoxEntity.Type[i];
@@ -1397,6 +1385,16 @@ public class BeardedFoxEntity extends AnimalEntity {
             return this.biomes;
         }
 
+        public static List<RegistryKey<Biome>> getAllBiomes() {
+            List<RegistryKey<Biome>> biomes = Type.CYAN.biomes;
+            biomes.addAll(RED.biomes);
+            biomes.addAll(WHITE.biomes);
+            biomes.addAll(GREEN.biomes);
+            biomes.addAll(GRAY.biomes);
+            biomes.addAll(BROWN.biomes);
+            return biomes;
+        }
+
         public static BeardedFoxEntity.Type byName(String name) {
             return (BeardedFoxEntity.Type)NAME_TYPE_MAP.getOrDefault(name, CYAN);
         }
@@ -1410,19 +1408,28 @@ public class BeardedFoxEntity extends AnimalEntity {
         }
 
         public static BeardedFoxEntity.Type fromBiome(Optional<RegistryKey<Biome>> optional) {
-            return CYAN; // just default this for now
-            //return optional.isPresent() && SNOW.biomes.contains(optional.get()) ? SNOW : RED;
-            /*if(optional.isPresent()) {
-                if(SNOW.biomes.contains(optional.get())){
-                    return SNOW;
-                } else if(CYAN.biomes.contains(optional.get())) {
-                    return CYAN;
-                } else {
+            if(optional.isPresent()) {
+                if(RED.biomes.contains(optional.get())) {
                     return RED;
                 }
+                else if(WHITE.biomes.contains(optional.get())) {
+                    return WHITE;
+                }
+                else if(GREEN.biomes.contains(optional.get())) {
+                    return GREEN;
+                }
+                else if(GRAY.biomes.contains(optional.get())) {
+                    return GRAY;
+                }
+                else if(BROWN.biomes.contains(optional.get())) {
+                    return BROWN;
+                }
+                else {
+                    return CYAN;
+                }
             } else {
-                return RED;
-            }*/
+                return CYAN; // just in case of weirdness
+            }
         }
     }
 }

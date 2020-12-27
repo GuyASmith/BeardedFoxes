@@ -16,20 +16,13 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(BannerItem.class)
 abstract class BannerOnEntityOverMix extends Item {
-    // the IDE wanted me to make this, dunno if it'll work...?
+
     public BannerOnEntityOverMix(Settings settings) {
         super(settings);
     }
-    /*@Redirect(method = "super.useOnEntity",
-              at = @At(value = "INVOKE", target = "Lnet/minecraft/item/BannerItem;(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;"))
-    private static ActionResult createBFBanner() {
-        return ActionResult.PASS;
-    }*/
 
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
@@ -37,10 +30,6 @@ abstract class BannerOnEntityOverMix extends Item {
             BannerItem banner = (BannerItem)stack.getItem();
 
             CompoundTag tag = stack.getSubTag("BlockEntityTag");
-
-            /*if(tag == null) { // will tag be null without patterns?
-                return ActionResult.FAIL;
-            }*/
 
             if(tag != null && tag.contains("Patterns")) {
                 // i.e: the banners have specific data, don't count them as usable for this purpose
@@ -53,7 +42,6 @@ abstract class BannerOnEntityOverMix extends Item {
 
             switch(banner.getColor()) {
                 case RED:
-                    // add banner patterns
                     listTag = (new BannerPattern.Patterns()).add(BannerPattern.STRIPE_CENTER, DyeColor.ORANGE)
                             .add(BannerPattern.RHOMBUS_MIDDLE, DyeColor.BLACK)
                             .add(BannerPattern.CURLY_BORDER, DyeColor.RED)
@@ -115,7 +103,7 @@ abstract class BannerOnEntityOverMix extends Item {
                     break;
                 case BLACK:
                     listTag = (new BannerPattern.Patterns()).add(BannerPattern.STRIPE_CENTER, DyeColor.BLACK)
-                            .add(BannerPattern.RHOMBUS_MIDDLE, DyeColor.GRAY)
+                            .add(BannerPattern.RHOMBUS_MIDDLE, DyeColor.GRAY) // different nose color so it shows up
                             .add(BannerPattern.CURLY_BORDER, DyeColor.BLACK)
                             .add(BannerPattern.CIRCLE_MIDDLE, DyeColor.BLACK)
                             .add(BannerPattern.CREEPER, DyeColor.BLACK)

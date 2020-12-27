@@ -1,7 +1,6 @@
 package com.guysmith.beardedfox.registry;
 
 import com.google.common.collect.ImmutableMap;
-import com.guysmith.beardedfox.BeardedFox;
 import com.guysmith.beardedfox.entity.BeardedFoxEntity;
 import com.guysmith.beardedfox.mixin.SpawnRestrictionsAccessor;
 import com.guysmith.beardedfox.mixin.SpawnSettingsAccessor;
@@ -22,16 +21,16 @@ import java.util.List;
 // vcokltf's Glow Squid mod  -  https://github.com/CarbonAgony/GlowSquid
 // apparently, their source for this was YanisBft's MooBlooms mod  -  https://github.com/YanisBft/MooBlooms
 public class SpawnInitializer {
-    private static final List<RegistryKey<Biome>> cyanBiomes = BeardedFoxEntity.Type.CYAN.getBiomes();
+    private static final List<RegistryKey<Biome>> bfBiomes = BeardedFoxEntity.Type.getAllBiomes();
 
     public static void initialize() {
         SpawnRestrictionsAccessor.invokeRegister(ModEntityTypes.BEARDED_FOX, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BeardedFoxEntity::canMobSpawn);
 
         for(Biome biome: BuiltinRegistries.BIOME) {
-            for(RegistryKey<Biome> key : cyanBiomes) {
+            for(RegistryKey<Biome> key : bfBiomes) {
                 if(biome == BuiltinRegistries.BIOME.get(key)) {
                     addSpawnToBiome(biome, new SpawnSettings.SpawnEntry(ModEntityTypes.BEARDED_FOX, 6, 2,4));
-                    break; // speeds up the process
+                    //break; // could actually be breaking both loops, oops
                 }
             }
         }
