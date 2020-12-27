@@ -21,16 +21,57 @@ import java.util.List;
 // vcokltf's Glow Squid mod  -  https://github.com/CarbonAgony/GlowSquid
 // apparently, their source for this was YanisBft's MooBlooms mod  -  https://github.com/YanisBft/MooBlooms
 public class SpawnInitializer {
-    private static final List<RegistryKey<Biome>> bfBiomes = BeardedFoxEntity.Type.getAllBiomes();
+    //private static final List<RegistryKey<Biome>> bfBiomes = BeardedFoxEntity.Type.getAllBiomes(); // wish this worked
+    private static final List<RegistryKey<Biome>> cyanBiomes = BeardedFoxEntity.Type.CYAN.getBiomes();
+    private static final List<RegistryKey<Biome>> redBiomes = BeardedFoxEntity.Type.RED.getBiomes();
+    private static final List<RegistryKey<Biome>> whiteBiomes = BeardedFoxEntity.Type.WHITE.getBiomes();
+    private static final List<RegistryKey<Biome>> grayBiomes = BeardedFoxEntity.Type.GRAY.getBiomes();
+    private static final List<RegistryKey<Biome>> greenBiomes = BeardedFoxEntity.Type.GREEN.getBiomes();
+    private static final List<RegistryKey<Biome>> brownBiomes = BeardedFoxEntity.Type.BROWN.getBiomes();
 
     public static void initialize() {
         SpawnRestrictionsAccessor.invokeRegister(ModEntityTypes.BEARDED_FOX, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BeardedFoxEntity::canMobSpawn);
 
         for(Biome biome: BuiltinRegistries.BIOME) {
-            for(RegistryKey<Biome> key : bfBiomes) {
+            for(RegistryKey<Biome> key : cyanBiomes) {
                 if(biome == BuiltinRegistries.BIOME.get(key)) {
                     addSpawnToBiome(biome, new SpawnSettings.SpawnEntry(ModEntityTypes.BEARDED_FOX, 6, 2,4));
-                    //break; // could actually be breaking both loops, oops
+                    break; // could actually be breaking both loops, oops
+                }
+            }
+
+            for(RegistryKey<Biome> key: redBiomes) { // dear god why
+                if(biome == BuiltinRegistries.BIOME.get(key)) {
+                    addSpawnToBiome(biome, new SpawnSettings.SpawnEntry(ModEntityTypes.BEARDED_FOX, 6, 2,4));
+                    break;
+                }
+            }
+
+            for(RegistryKey<Biome> key: whiteBiomes) { // dear god why x2
+                if(biome == BuiltinRegistries.BIOME.get(key)) {
+                    addSpawnToBiome(biome, new SpawnSettings.SpawnEntry(ModEntityTypes.BEARDED_FOX, 6, 2,4));
+                    break;
+                }
+            }
+
+            for(RegistryKey<Biome> key: grayBiomes) { // dear god why x3
+                if(biome == BuiltinRegistries.BIOME.get(key)) {
+                    addSpawnToBiome(biome, new SpawnSettings.SpawnEntry(ModEntityTypes.BEARDED_FOX, 6, 2,4));
+                    break;
+                }
+            }
+
+            for(RegistryKey<Biome> key: greenBiomes) { // dear god why x4
+                if(biome == BuiltinRegistries.BIOME.get(key)) {
+                    addSpawnToBiome(biome, new SpawnSettings.SpawnEntry(ModEntityTypes.BEARDED_FOX, 6, 2,4));
+                    break;
+                }
+            }
+
+            for(RegistryKey<Biome> key: brownBiomes) { // dear god why x5
+                if(biome == BuiltinRegistries.BIOME.get(key)) {
+                    addSpawnToBiome(biome, new SpawnSettings.SpawnEntry(ModEntityTypes.BEARDED_FOX, 6, 2,4));
+                    break;
                 }
             }
         }

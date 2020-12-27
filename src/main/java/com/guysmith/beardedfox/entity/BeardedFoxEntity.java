@@ -1385,15 +1385,24 @@ public class BeardedFoxEntity extends AnimalEntity {
             return this.biomes;
         }
 
-        public static List<RegistryKey<Biome>> getAllBiomes() {
-            List<RegistryKey<Biome>> biomes = Type.CYAN.biomes;
-            biomes.addAll(RED.biomes);
-            biomes.addAll(WHITE.biomes);
-            biomes.addAll(GREEN.biomes);
-            biomes.addAll(GRAY.biomes);
-            biomes.addAll(BROWN.biomes);
+        // throws Unsupported Operation
+        /*public static List<RegistryKey<Biome>> getAllBiomes() {
+            List<RegistryKey<Biome>> biomes = Type.CYAN.getBiomes();
+            // this threw exceptions
+            *//*biomes.addAll(RED.getBiomes());
+            biomes.addAll(WHITE.getBiomes());
+            biomes.addAll(GREEN.getBiomes());
+            biomes.addAll(GRAY.getBiomes());
+            biomes.addAll(BROWN.getBiomes());*//*
+
+            for(int i = 1; i < TYPES.length; i++) {
+                Type t = fromId(i);
+                for(RegistryKey<Biome> key: t.biomes) {
+                    biomes.add(key);
+                }
+            }
             return biomes;
-        }
+        }*/
 
         public static BeardedFoxEntity.Type byName(String name) {
             return (BeardedFoxEntity.Type)NAME_TYPE_MAP.getOrDefault(name, CYAN);

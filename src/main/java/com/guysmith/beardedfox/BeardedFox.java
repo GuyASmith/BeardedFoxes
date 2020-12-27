@@ -15,6 +15,6 @@ public class BeardedFox implements ModInitializer {
     public void onInitialize() {
         FabricDefaultAttributeRegistry.register(ModEntityTypes.BEARDED_FOX, BeardedFoxEntity.createFoxAttributes());
         ModItems.registerItems(); // spawn egg
-        SpawnInitializer.initialize();// natural mob spawning
+        SpawnInitializer.initialize(); // natural mob spawning
     }
 }
