@@ -1,14 +1,8 @@
 package com.guysmith.beardedfox.entity;
 
 import com.google.common.collect.Lists;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -250,9 +244,15 @@ public class BeardedFoxEntity extends AnimalEntity {
     }
 
     public BeardedFoxEntity createChild(ServerWorld serverWorld, PassiveEntity passiveEntity) {
-        // possibility: breed Bearded Foxes with all banner-matching colour palettes through cross breeding and such?
         BeardedFoxEntity foxEntity = (BeardedFoxEntity) ModEntityTypes.BEARDED_FOX.create(serverWorld);
-        foxEntity.setType(this.random.nextBoolean() ? this.getFoxType() : ((BeardedFoxEntity)passiveEntity).getFoxType());
+        if(this.random.nextBoolean()) {
+            // there's an ~50% chance of making the mixed breed colour for valid combinations
+            // invalid mixtures default to one of the parents' colours
+            foxEntity.setType(Type.fromValidCombination(this.getFoxType(), ((BeardedFoxEntity)passiveEntity).getFoxType()));
+        } else {
+            foxEntity.setType(this.random.nextBoolean() ? this.getFoxType() : ((BeardedFoxEntity)passiveEntity).getFoxType());
+        }
+
         return foxEntity;
     }
 
@@ -1353,9 +1353,17 @@ public class BeardedFoxEntity extends AnimalEntity {
         WHITE(2, "white", BiomeKeys.SNOWY_MOUNTAINS, BiomeKeys.SNOWY_TAIGA_MOUNTAINS),
         GREEN(3, "green", BiomeKeys.SWAMP, BiomeKeys.SWAMP_HILLS),
         GRAY(4, "gray", BiomeKeys.MOUNTAINS, BiomeKeys.GRAVELLY_MOUNTAINS, BiomeKeys.MODIFIED_GRAVELLY_MOUNTAINS, BiomeKeys.WOODED_MOUNTAINS),
-        BROWN(5, "brown", BiomeKeys.DARK_FOREST, BiomeKeys.DARK_FOREST_HILLS); // that's all I'm going for at the moment
-        /*LIME(6, "lime", BiomeKeys.FLOWER_FOREST, BiomeKeys.SUNFLOWER_PLAINS),
-        YELLOW(7, "yellow", BiomeKeys.DESERT, BiomeKeys.DESERT_LAKES, BiomeKeys.DESERT_HILLS);*/
+        BROWN(5, "brown", BiomeKeys.DARK_FOREST, BiomeKeys.DARK_FOREST_HILLS), // up to Brown in this list spawn naturally
+        LIME(6, "lime", BiomeKeys.THE_VOID), // just to be sure it compiles without errors, even if the IDE doesn't complain when there are no assigned "biomes"
+        YELLOW(7, "yellow", BiomeKeys.THE_VOID), // we aren't gathering these biomes for spawning anyway
+        BLACK(8, "black", BiomeKeys.THE_VOID),
+        LIGHT_GRAY(9, "light_gray", BiomeKeys.THE_VOID),
+        LIGHT_BLUE(10, "light_blue", BiomeKeys.THE_VOID),
+        ORANGE(11, "orange", BiomeKeys.THE_VOID),
+        PINK(12, "pink", BiomeKeys.THE_VOID),
+        PURPLE(13, "purple", BiomeKeys.THE_VOID),
+        MAGENTA(14, "magenta", BiomeKeys.THE_VOID),
+        BLUE(15, "blue", BiomeKeys.THE_VOID);
 
         private static final BeardedFoxEntity.Type[] TYPES = (BeardedFoxEntity.Type[]) Arrays.stream(values()).sorted(Comparator.comparingInt(BeardedFoxEntity.Type::getId)).toArray((i) -> {
             return new BeardedFoxEntity.Type[i];
@@ -1439,6 +1447,100 @@ public class BeardedFoxEntity extends AnimalEntity {
             } else {
                 return CYAN; // just in case of weirdness
             }
+        }
+
+        public static Type fromValidCombination(Type parentType1, Type parentType2) {
+            /*
+             * Breeding key for mixing colours:
+             *   Black + White = Gray
+             *   Blue + Green = Cyan
+             *   Blue + Orange = Brown
+             *   Blue + Red = Purple
+             *   Blue + Yellow = Green
+             *   Blue + White = Light Blue
+             *   Brown + Gray = Black
+             *   Cyan + Gray = Blue
+             *   Gray + White = Light Gray
+             *   Green + Red = Brown
+             *   Green + White = Lime
+             *   Light Gray + Light Gray = White
+             *   Lime + Red = Yellow
+             *   Pink + Gray = Red
+             *   Pink + Purple = Magenta
+             *   Purple + Yellow = Brown
+             *   Red + Yellow = Orange
+             *   Red + White = Pink
+             *
+             * General logic follows colour mixing like RGB or paints, where most useful.
+             * Things to note:
+             *   1) Complementary colours combine to make brown
+             *   2) Yellow is a light brown, sort of, so it needs to be made with a specific almost brown combination
+             *   3) Minecraft colour recipes are taken into account, so even though lime looks like a more yellow green,
+             *      white and green combine to make it
+             *   4) You should be able to create any type of colour via mixed breeding, hence some stranger combinations
+             */
+
+            Type childType;
+
+            if((parentType1 == BLACK && parentType2 == WHITE)
+                || (parentType1 == WHITE && parentType2 == BLACK)) {
+                childType = GRAY;
+            } else if((parentType1 == BLUE && parentType2 == GREEN)
+                || (parentType1 == GREEN && parentType2 == BLUE)) {
+               childType = CYAN;
+            } else if((parentType1 == BLUE && parentType2 == ORANGE)
+                    || (parentType1 == ORANGE && parentType2 == BLUE)) {
+                childType = BROWN;
+            } else if((parentType1 == BLUE && parentType2 == RED)
+                    || (parentType1 == RED && parentType2 == BLUE)) {
+                childType = PURPLE;
+            } else if((parentType1 == BLUE && parentType2 == WHITE)
+                    || (parentType1 == WHITE && parentType2 == BLUE)) {
+                childType = LIGHT_BLUE;
+            } else if((parentType1 == BLUE && parentType2 == YELLOW)
+                    || (parentType1 == YELLOW && parentType2 == BLUE)) {
+                childType = GREEN;
+            } else if((parentType1 == BROWN && parentType2 == GRAY)
+                    || (parentType1 == GRAY && parentType2 == BROWN)) {
+                childType = BLACK;
+            } else if((parentType1 == CYAN && parentType2 == GRAY)
+                    || (parentType1 == GRAY && parentType2 == CYAN)) {
+                childType = BLUE;
+            } else if((parentType1 == GRAY && parentType2 == WHITE)
+                    || (parentType1 == WHITE && parentType2 == GRAY)) {
+                childType = LIGHT_GRAY;
+            } else if((parentType1 == GREEN && parentType2 == RED)
+                    || (parentType1 == RED && parentType2 == GREEN)) {
+                childType = BROWN;
+            } else if((parentType1 == GREEN && parentType2 == WHITE)
+                    || (parentType1 == WHITE && parentType2 == GREEN)) {
+                childType = LIME;
+            } else if((parentType1 == LIGHT_GRAY && parentType2 == LIGHT_GRAY)) {
+                childType = WHITE;
+            } else if((parentType1 == LIME && parentType2 == RED)
+                    || (parentType1 == RED && parentType2 == LIME)) {
+                childType = YELLOW;
+            } else if((parentType1 == PINK && parentType2 == GRAY)
+                    || (parentType1 == GRAY && parentType2 == PINK)) {
+                childType = RED;
+            } else if((parentType1 == PINK && parentType2 == PURPLE)
+                    || (parentType1 == PURPLE && parentType2 == PINK)) {
+                childType = MAGENTA;
+            } else if((parentType1 == PURPLE && parentType2 == YELLOW)
+                    || (parentType1 == YELLOW && parentType2 == PURPLE)) {
+                childType = BROWN;
+            } else if((parentType1 == RED && parentType2 == YELLOW)
+                    || (parentType1 == YELLOW && parentType2 == RED)) {
+                childType = ORANGE;
+            } else if((parentType1 == RED && parentType2 == WHITE)
+                    || (parentType1 == WHITE && parentType2 == RED)) {
+                childType = PINK;
+            } else {
+                Random random = new Random();
+                childType = random.nextBoolean() ? parentType1 : parentType2;
+            }
+
+            return childType;
         }
     }
 }

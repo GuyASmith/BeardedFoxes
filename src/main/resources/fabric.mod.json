@@ -1,15 +1,15 @@
 {
   "schemaVersion": 1,
   "id": "beardedfox",
-  "version": "0.2.1",
+  "version": "0.3.1",
   "name": "Bearded Foxes",
   "description": "Adds bearded foxes from my Foxberd YouTube series!",
   "authors": [
     "GuySmith"
   ],
   "contact": {
-    "homepage": "",
-    "sources": ""
+    "homepage": "https://www.youtube.com/playlist?list=PLfK30xqsKNltcy__S9hXAnQd9LaB5TYYX",
+    "sources": "https://github.com/GuyASmith/BeardedFoxes"
   },
   "license": "MIT",
   "icon": "assets/beardedfox/icon.png",
