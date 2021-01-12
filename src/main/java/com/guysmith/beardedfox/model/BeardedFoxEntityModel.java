@@ -23,6 +23,7 @@ public class BeardedFoxEntityModel extends EntityModel<BeardedFoxEntity> {
     private final ModelPart rightEar;
     private final ModelPart leftEar;
     private final ModelPart nose;
+    private final ModelPart beard;
     private final ModelPart torso;
     private final ModelPart rightBackLeg;
     private final ModelPart leftBackLeg;
@@ -42,37 +43,53 @@ public class BeardedFoxEntityModel extends EntityModel<BeardedFoxEntity> {
 
         this.textureWidth = 48;
         this.textureHeight = 32;
+
         this.head = new ModelPart(this, 1, 5);
         this.head.addCuboid(-3.0F, -2.0F, -5.0F, 8.0F, 6.0F, 6.0F);
         this.head.setPivot(-1.0F, 16.5F, -3.0F);
+
         this.rightEar = new ModelPart(this, 8, 1);
         this.rightEar.addCuboid(-3.0F, -4.0F, -4.0F, 2.0F, 2.0F, 1.0F);
+
         this.leftEar = new ModelPart(this, 15, 1);
         this.leftEar.addCuboid(3.0F, -4.0F, -4.0F, 2.0F, 2.0F, 1.0F);
+
         this.nose = new ModelPart(this, 6, 18);
         this.nose.addCuboid(-1.0F, 2.01F, -8.0F, 4.0F, 2.0F, 3.0F);
+
+        this.beard = new ModelPart(this, 22, 0);
+        this.beard.addCuboid(0.0F,3.35F,-6.0F, 2.0F, 1.0F, 3.0F);
+
         this.head.addChild(this.rightEar);
         this.head.addChild(this.leftEar);
         this.head.addChild(this.nose);
+        this.head.addChild(this.beard);
+
         this.torso = new ModelPart(this, 24, 15);
         this.torso.addCuboid(-3.0F, 3.999F, -3.5F, 6.0F, 11.0F, 6.0F);
         this.torso.setPivot(0.0F, 16.0F, -6.0F);
+
         float f = 0.001F;
         this.rightBackLeg = new ModelPart(this, 13, 24);
         this.rightBackLeg.addCuboid(2.0F, 0.5F, -1.0F, 2.0F, 6.0F, 2.0F, 0.001F);
         this.rightBackLeg.setPivot(-5.0F, 17.5F, 7.0F);
+
         this.leftBackLeg = new ModelPart(this, 4, 24);
         this.leftBackLeg.addCuboid(2.0F, 0.5F, -1.0F, 2.0F, 6.0F, 2.0F, 0.001F);
         this.leftBackLeg.setPivot(-1.0F, 17.5F, 7.0F);
+
         this.rightFrontLeg = new ModelPart(this, 13, 24);
         this.rightFrontLeg.addCuboid(2.0F, 0.5F, -1.0F, 2.0F, 6.0F, 2.0F, 0.001F);
         this.rightFrontLeg.setPivot(-5.0F, 17.5F, 0.0F);
+
         this.leftFrontLeg = new ModelPart(this, 4, 24);
         this.leftFrontLeg.addCuboid(2.0F, 0.5F, -1.0F, 2.0F, 6.0F, 2.0F, 0.001F);
         this.leftFrontLeg.setPivot(-1.0F, 17.5F, 0.0F);
+
         this.tail = new ModelPart(this, 30, 0);
         this.tail.addCuboid(2.0F, 0.0F, -1.0F, 4.0F, 9.0F, 5.0F);
         this.tail.setPivot(-4.0F, 15.0F, -1.0F);
+
         this.torso.addChild(this.tail);
     }
 

@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "id": "beardedfox",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "name": "Bearded Foxes",
-  "description": "Adds bearded foxes from my Foxberd YouTube series!",
+  "description": "Adds bearded foxes from my Foxberd YouTube series",
   "authors": [
     "GuySmith"
   ],
