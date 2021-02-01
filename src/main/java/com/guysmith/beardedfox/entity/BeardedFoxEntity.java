@@ -150,6 +150,15 @@ public class BeardedFoxEntity extends AnimalEntity {
         this.targetSelector.add(3, new BeardedFoxEntity.DefendFriendGoal(LivingEntity.class, false, false, (livingEntity) -> JUST_ATTACKED_SOMETHING_FILTER.test(livingEntity) && !this.canTrust(livingEntity.getUuid())));
     }
 
+    @Override
+    public boolean damage(DamageSource source, float amount) {
+        if(source == DamageSource.SWEET_BERRY_BUSH) {
+            return false;
+        } else {
+            return super.damage(source, amount);
+        }
+    }
+
     public SoundEvent getEatSound(ItemStack stack) {
         return SoundEvents.ENTITY_FOX_EAT;
     }
