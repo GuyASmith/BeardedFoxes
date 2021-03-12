@@ -1,6 +1,7 @@
 package com.guysmith.beardedfox;
 
 import com.guysmith.beardedfox.entity.BeardedFoxEntity;
+import com.guysmith.beardedfox.entity.DivineFoxEntity;
 import com.guysmith.beardedfox.registry.ModEntityTypes;
 import com.guysmith.beardedfox.registry.ModItems;
 import com.guysmith.beardedfox.registry.SpawnInitializer;
@@ -14,6 +15,7 @@ public class BeardedFox implements ModInitializer {
     @Override
     public void onInitialize() {
         FabricDefaultAttributeRegistry.register(ModEntityTypes.BEARDED_FOX, BeardedFoxEntity.createFoxAttributes());
+        FabricDefaultAttributeRegistry.register(ModEntityTypes.DIVINE_FOX, DivineFoxEntity.createFoxAttributes());
         ModItems.registerItems(); // spawn egg
         SpawnInitializer.initialize(); // natural mob spawning
     }

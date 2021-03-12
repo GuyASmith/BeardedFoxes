@@ -57,6 +57,7 @@ public class BeardedFoxEntityModel extends EntityModel<BeardedFoxEntity> {
         this.nose = new ModelPart(this, 6, 18);
         this.nose.addCuboid(-1.0F, 2.01F, -8.0F, 4.0F, 2.0F, 3.0F);
 
+        // this code original
         this.beard = new ModelPart(this, 22, 0);
         this.beard.addCuboid(0.0F,3.35F,-6.0F, 2.0F, 1.0F, 3.0F);
 

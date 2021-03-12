@@ -80,7 +80,7 @@ import net.minecraft.world.biome.BiomeKeys;
 
 public class BeardedFoxEntity extends AnimalEntity {
     private static final TrackedData<Integer> TYPE;
-    private static final TrackedData<Byte> FOX_FLAGS;
+    private static final TrackedData<Byte> BEARDED_FOX_FLAGS;
     private static final TrackedData<Optional<UUID>> OWNER;
     private static final TrackedData<Optional<UUID>> OTHER_TRUSTED;
     private static final Predicate<ItemEntity> PICKABLE_DROP_FILTER;
@@ -120,7 +120,7 @@ public class BeardedFoxEntity extends AnimalEntity {
         this.dataTracker.startTracking(OWNER, Optional.empty());
         this.dataTracker.startTracking(OTHER_TRUSTED, Optional.empty());
         this.dataTracker.startTracking(TYPE, 0);
-        this.dataTracker.startTracking(FOX_FLAGS, (byte)0);
+        this.dataTracker.startTracking(BEARDED_FOX_FLAGS, (byte)0);
     }
 
     protected void initGoals() {
@@ -415,15 +415,15 @@ public class BeardedFoxEntity extends AnimalEntity {
 
     private void setFoxFlag(int mask, boolean value) {
         if (value) {
-            this.dataTracker.set(FOX_FLAGS, (byte)((Byte)this.dataTracker.get(FOX_FLAGS) | mask));
+            this.dataTracker.set(BEARDED_FOX_FLAGS, (byte)((Byte)this.dataTracker.get(BEARDED_FOX_FLAGS) | mask));
         } else {
-            this.dataTracker.set(FOX_FLAGS, (byte)((Byte)this.dataTracker.get(FOX_FLAGS) & ~mask));
+            this.dataTracker.set(BEARDED_FOX_FLAGS, (byte)((Byte)this.dataTracker.get(BEARDED_FOX_FLAGS) & ~mask));
         }
 
     }
 
     private boolean getFoxFlag(int bitmask) {
-        return ((Byte)this.dataTracker.get(FOX_FLAGS) & bitmask) != 0;
+        return ((Byte)this.dataTracker.get(BEARDED_FOX_FLAGS) & bitmask) != 0;
     }
 
     public boolean canEquip(ItemStack stack) {
@@ -665,7 +665,7 @@ public class BeardedFoxEntity extends AnimalEntity {
 
     static {
         TYPE = DataTracker.registerData(BeardedFoxEntity.class, TrackedDataHandlerRegistry.INTEGER);
-        FOX_FLAGS = DataTracker.registerData(BeardedFoxEntity.class, TrackedDataHandlerRegistry.BYTE);
+        BEARDED_FOX_FLAGS = DataTracker.registerData(BeardedFoxEntity.class, TrackedDataHandlerRegistry.BYTE);
         OWNER = DataTracker.registerData(BeardedFoxEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
         OTHER_TRUSTED = DataTracker.registerData(BeardedFoxEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
         PICKABLE_DROP_FILTER = (itemEntity) -> !itemEntity.cannotPickup() && itemEntity.isAlive();
@@ -1401,25 +1401,6 @@ public class BeardedFoxEntity extends AnimalEntity {
         public List<RegistryKey<Biome>> getBiomes() {
             return this.biomes;
         }
-
-        // throws Unsupported Operation
-        /*public static List<RegistryKey<Biome>> getAllBiomes() {
-            List<RegistryKey<Biome>> biomes = Type.CYAN.getBiomes();
-            // this threw exceptions
-            *//*biomes.addAll(RED.getBiomes());
-            biomes.addAll(WHITE.getBiomes());
-            biomes.addAll(GREEN.getBiomes());
-            biomes.addAll(GRAY.getBiomes());
-            biomes.addAll(BROWN.getBiomes());*//*
-
-            for(int i = 1; i < TYPES.length; i++) {
-                Type t = fromId(i);
-                for(RegistryKey<Biome> key: t.biomes) {
-                    biomes.add(key);
-                }
-            }
-            return biomes;
-        }*/
 
         public static BeardedFoxEntity.Type byName(String name) {
             return (BeardedFoxEntity.Type)NAME_TYPE_MAP.getOrDefault(name, CYAN);
